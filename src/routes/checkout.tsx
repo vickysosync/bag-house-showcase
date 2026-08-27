@@ -30,8 +30,9 @@ function CheckoutPage() {
     pincode: "",
   });
   const [delivery, setDelivery] = useState("Standard Delivery");
-  const [payment, setPayment] = useState(payments[0]);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [payment, setPayment] = useState<string>(payments[0]!);
+  type FormErrors = Partial<Record<keyof typeof form, string>>;
+  const [errors, setErrors] = useState<FormErrors>({});
   const [busy, setBusy] = useState(false);
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -51,7 +52,7 @@ function CheckoutPage() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const err: Record<string, string> = {};
+    const err: FormErrors = {};
     if (form.name.trim().length < 2) err.name = "Enter your full name";
     if (!/^[0-9+\s-]{10,15}$/.test(form.phone.trim())) err.phone = "Enter a valid mobile number";
     if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) err.email = "Enter a valid email";
@@ -101,13 +102,13 @@ function CheckoutPage() {
                     value={form[f.k as keyof typeof form]}
                     onChange={(e) => set(f.k, e.target.value)}
                   />
-                  {errors[f.k] && <p className="mt-1 text-xs text-destructive">{errors[f.k]}</p>}
+                  {errors[f.k as keyof typeof form] && <p className="mt-1 text-xs text-destructive">{errors[f.k as keyof typeof form]}</p>}
                 </div>
               ))}
               <div className="sm:col-span-2">
                 <label className="label-x" htmlFor="co-address">Address</label>
                 <textarea id="co-address" rows={3} className="field" value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="House / flat, street, landmark" />
-                {errors.address && <p className="mt-1 text-xs text-destructive">{errors.address}</p>}
+                {errors["address"] && <p className="mt-1 text-xs text-destructive">{errors["address"]}</p>}
               </div>
             </div>
           </section>

@@ -10,23 +10,24 @@ export function EnquiryForm({ product = "", compact = false }: { product?: strin
     name: "",
     phone: "",
     email: "",
-    type: types[0],
+    type: types[0]!,
     product,
     quantity: "1",
     message: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  type FormErrors = Partial<Record<"name" | "phone" | "email" | "message", string>>;
+  const [errors, setErrors] = useState<FormErrors>({});
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const validate = () => {
-    const e: Record<string, string> = {};
-    if (form.name.trim().length < 2) e.name = "Please enter your name";
-    if (!/^[0-9+\s-]{10,15}$/.test(form.phone.trim())) e.phone = "Enter a valid phone number";
-    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = "Enter a valid email";
-    if (form.message.trim().length < 5) e.message = "Tell us a little more";
+    const e: FormErrors = {};
+    if (form.name.trim().length < 2) e["name"] = "Please enter your name";
+    if (!/^[0-9+\s-]{10,15}$/.test(form.phone.trim())) e["phone"] = "Enter a valid phone number";
+    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e["email"] = "Enter a valid email";
+    if (form.message.trim().length < 5) e["message"] = "Tell us a little more";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -63,17 +64,17 @@ export function EnquiryForm({ product = "", compact = false }: { product?: strin
         <div>
           <label className="label-x" htmlFor="eq-name">Name</label>
           <input id="eq-name" className="field" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Your full name" />
-          {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
+          {errors["name"] && <p className="mt-1 text-xs text-destructive">{errors["name"]}</p>}
         </div>
         <div>
           <label className="label-x" htmlFor="eq-phone">Phone</label>
           <input id="eq-phone" className="field" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+91 90000 00000" />
-          {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}
+          {errors["phone"] && <p className="mt-1 text-xs text-destructive">{errors["phone"]}</p>}
         </div>
         <div>
           <label className="label-x" htmlFor="eq-email">Email</label>
           <input id="eq-email" className="field" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="you@example.com" />
-          {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+          {errors["email"] && <p className="mt-1 text-xs text-destructive">{errors["email"]}</p>}
         </div>
         <div>
           <label className="label-x" htmlFor="eq-type">Enquiry type</label>
@@ -95,7 +96,7 @@ export function EnquiryForm({ product = "", compact = false }: { product?: strin
       <div>
         <label className="label-x" htmlFor="eq-msg">Message</label>
         <textarea id="eq-msg" rows={4} className="field" value={form.message} onChange={(e) => set("message", e.target.value)} placeholder="How can we help?" />
-        {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
+        {errors["message"] && <p className="mt-1 text-xs text-destructive">{errors["message"]}</p>}
       </div>
       <button type="submit" className="btn-base btn-gold w-full" disabled={busy}>
         {busy ? "Sending…" : "Submit Enquiry"}

@@ -149,14 +149,14 @@ function ProductPage() {
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <button className="btn-base btn-primary" disabled={!product.stock} onClick={() => addToCart(product, { color, size, qty })}>
+            <button className="btn-base btn-primary" disabled={!product.stock} onClick={() => addToCart(product, { color: color ?? "Default", size, qty })}>
               Add to Cart
             </button>
             <button
               className="btn-base btn-gold"
               disabled={!product.stock}
               onClick={() => {
-                addToCart(product, { color, size, qty });
+                addToCart(product, { color: color ?? "Default", size, qty });
                 navigate({ to: "/checkout" });
               }}
             >

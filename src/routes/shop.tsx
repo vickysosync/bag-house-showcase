@@ -4,10 +4,12 @@ import { ShopBrowser } from "@/components/site/ShopBrowser";
 type ShopSearch = { q?: string; category?: string };
 
 export const Route = createFileRoute("/shop")({
-  validateSearch: (s: Record<string, unknown>): ShopSearch => ({
-    q: typeof s.q === "string" ? s.q : undefined,
-    category: typeof s.category === "string" ? s.category : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): ShopSearch => {
+    const out: ShopSearch = {};
+    if (typeof s["q"] === "string") out.q = s["q"];
+    if (typeof s["category"] === "string") out.category = s["category"];
+    return out;
+  },
   head: () => ({
     meta: [
       { title: "Shop All Bags & Luggage — Chandok Bag House" },
