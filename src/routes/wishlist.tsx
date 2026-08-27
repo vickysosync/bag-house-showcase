@@ -47,7 +47,7 @@ function WishlistPage() {
                 <Link to="/product/$id" params={{ id: p.id }} className="font-semibold text-foreground hover:text-secondary">
                   {p.name}
                 </Link>
-                <div className="mt-2"><Stars value={p.rating} /></div>
+                <div className="mt-2"><Stars rating={p.rating} /></div>
                 <p className="mt-3 flex items-baseline gap-2">
                   <span className="font-display text-xl text-primary">{inr(p.price)}</span>
                   <span className="text-sm text-muted-foreground line-through">{inr(p.mrp)}</span>
